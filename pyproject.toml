@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "et0735-gitviz"
+version = "1.0.0"
+description = "Live browser view of a local Git repository: working directory, staging area and commit graph"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+gitviz = "gitviz:main"
+
+[tool.setuptools]
+py-modules = ["gitviz"]
