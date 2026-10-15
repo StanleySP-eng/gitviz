@@ -67,7 +67,7 @@ def read_status(top):
 def read_state(path, show_orphans):
     s = {"path": path, "repo": False}
     if not os.path.isdir(path):
-        s["error"] = "This folder does not exist yet."
+        s["error"] = "This folder does not exist yet. Create it with mkdir, then run git init inside it – this page will update by itself."
         return s
     rc, top = git(path, "rev-parse", "--show-toplevel")
     if rc != 0:
