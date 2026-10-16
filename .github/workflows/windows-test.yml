@@ -1,0 +1,37 @@
+name: Windows test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Git settings used in Lab 1
+        shell: cmd
+        run: |
+          git config --global user.name "Lab Student"
+          git config --global user.email "student@example.com"
+          git config --global init.defaultBranch master
+      - name: Install GitViz the way students do (Lab 1 step 1.9)
+        shell: cmd
+        run: pip install git+https://github.com/${{ github.repository }}@${{ github.sha }}
+      - name: Check the commands from the lab sheet
+        shell: cmd
+        run: |
+          where gitviz
+          gitviz --help
+          python -m gitviz --help
+      - name: End-to-end test
+        shell: cmd
+        run: python tests\smoke_test.py

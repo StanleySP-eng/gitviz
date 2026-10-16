@@ -191,10 +191,15 @@ def main():
 
     repo = os.path.abspath(args.repo)
     handler = make_handler(repo)
+
+    class Server(ThreadingHTTPServer):
+        # On Windows SO_REUSEADDR lets a second GitViz bind the same port; a busy port must fail.
+        allow_reuse_address = os.name != "nt"
+
     server = None
     for port in range(args.port, args.port + 20):
         try:
-            server = ThreadingHTTPServer(("127.0.0.1", port), handler)
+            server = Server(("127.0.0.1", port), handler)
             break
         except OSError:
             continue
